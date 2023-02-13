@@ -1,47 +1,106 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { reactive } from 'vue'
+
+  const estado = reactive({
+    filtro: 'add',
+    number1: 0,
+    number2: 0,
+  })
+
+  function calculo() {
+    const filtro = estado.filtro;
+
+    switch (filtro) {
+      case 'add':
+        return parseFloat(estado.number1) + parseFloat(estado.number2)
+      case 'sub':
+        return parseFloat(estado.number1) - parseFloat(estado.number2)
+      case 'mul':
+        return parseFloat(estado.number1) * parseFloat(estado.number2)
+      case 'div':
+        return parseFloat(estado.number1) / parseFloat(estado.number2)
+    }
+  }
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div class="container">
+    <h1>Calculadora Aritmética</h1>
+    <div class="container__area">
+      <input class="operador" type="number" @keyup="evento => estado.number1 = evento.target.value">
+      <select class="operador__select" @change="evento => estado.filtro = evento.target.value">
+        <option class="container__operando" value="add">+</option>
+        <option class="container__operando" value="sub">-</option>
+        <option class="container__operando" value="mul">*</option>
+        <option class="container__operando" value="div">/</option>
+      </select>
+      <input class="operador" type="number" name="" @keyup="evento => estado.number2 = evento.target.value">
     </div>
-  </header>
+    <div>
+      <h2>Resultado</h2>
+      <span>{{ calculo() }}</span>
+    </div>
+  </div>
 
-  <main>
-    <TheWelcome />
-  </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+    text-transform: uppercase;
+  }
 
-@media (min-width: 1024px) {
-  header {
+  h1 {
+    padding-top: 10rem;
+  }
+
+  h2 {
+    padding: 5rem 0 2rem;
+  }
+
+  select {
+    appearance: none;
+    padding: 0 0.5rem;
+  }
+
+  select:hover {
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 3rem;
+    padding: 0.5rem;
+    border: 5px solid #5f77e6;
+    border-radius: 4px;
+  }
+  .container {
+    background-color: #b3eeee;
+    height: 97vh;
+  }
+  .container__area {
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    justify-content: center;
+    margin-top: 5rem;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  .container__operando {
+    font-size: 1.5rem;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  .operador {
+    font-size: 2rem;
+    margin: 0 2rem 0;
   }
-}
+
+  .operador__select {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
 </style>
